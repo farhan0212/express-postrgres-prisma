@@ -9,7 +9,6 @@ const {
   updateProduct,
   deleteProduct,
 } = require("./product.services");
-console.log(prisma);
 
 const router = express.Router();
 
@@ -19,9 +18,13 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+  if (typeof id !== "number") {
+    throw Error("ID must be a number");
+  }
+
   try {
-    const productId = parseInt(req.params.id);
-    const product = await getProductById(productId);
+    const productId = req.params.id;
+    const product = await getProductById(parseInt(productId));
     res.send(product);
   } catch (error) {
     res.status(400).send(error.message);
@@ -54,7 +57,7 @@ router.put("/:id", async (req, res) => {
       statusCode: 400,
     });
   }
-  const product = await updateProduct(productId, productData);
+  const product = await updateProduct(parseInt(productId), productData);
   res.status(200).send({ data: product, message: "Updated", statusCode: 200 });
 });
 
