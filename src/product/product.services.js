@@ -42,9 +42,9 @@ const updateProduct = async (id, productData) => {
 };
 
 const deleteProduct = async (id) => {
-  await getProductById(id);
-  await deleteProductById(id);
-  return product;
+  const product = await getProductById(id);
+  const deleteProduct = await deleteProductById(id);
+  return deleteProduct;
 };
 
 const patchProduct = async (id, productData) => {

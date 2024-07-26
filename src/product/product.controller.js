@@ -38,7 +38,6 @@ router.post("/", async (req, res) => {
     res.send(product);
   } catch (error) {
     res.status(500).send(error.message);
-    tus(500).send(error.message);
   }
 });
 
@@ -75,8 +74,11 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const productId = req.params.id;
-    await deleteProduct(parseInt(productId));
-    res.send("Product deleted successfully");
+    const deletedProduct = await deleteProduct(parseInt(productId));
+    res.send({
+      message: "Product deleted successfully",
+      product: deletedProduct,
+    });
   } catch (error) {
     res.status(400).send(error.message);
   }
